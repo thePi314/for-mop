@@ -1,0 +1,15 @@
+#!/bin/sh
+set -o errexit
+set -o nounset
+
+case $SERVICE_TYPE in
+  "api")
+  python -m uvicorn mop_test.asgi:application --host 0.0.0.0 --port 8000
+  ;;
+  "celeryworker")
+  python -m celery -A mop_test worker -P gevent --loglevel=INFO --concurrency=500
+  ;;
+  "celerybeat")
+  python -m celery -A mop_test beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+  ;;
+esac
