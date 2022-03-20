@@ -28,10 +28,10 @@ ROOT_DIR = environ.Path(__file__) - 2
 SECRET_KEY = env.str('SECRET_KEY', default='')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
+ENVIRONMENT = env.str('ENVIRONMENT', default='local')
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 
 # Application definition
 
@@ -177,6 +177,8 @@ CACHES = {
         'OPTIONS': REDIS_OPTIONS
     },
 }
+
+ASGI_APPLICATION = "mop_test.asgi.application"
 
 if REDIS_PASSWORD:
     REDIS_PASSWORD = ':' + REDIS_PASSWORD + '@'

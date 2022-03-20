@@ -1,3 +1,4 @@
+from django_celery_beat.models import CrontabSchedule, PeriodicTask
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, status
 from rest_framework.decorators import action
@@ -18,9 +19,10 @@ class NewsModelView(ModelViewSet):
     pagination_class = LimitOffsetPagination
     filterset_fields = {
         'created_at': ['gte', 'lte', 'gt', 'lt'],
+        'symbol': ['exact']
     }
     order_fields = "__all__"
-    search_fields = ['title']
+    search_fields = ['title', 'id']
 
     @action(detail=True, methods=['get'])
     def manual_fetch(self, request):
